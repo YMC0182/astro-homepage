@@ -121,8 +121,8 @@ const myTags = [
     }
 
     function updateUI(data) {
-        document.getElementById('currentViews').textContent = data.views.toLocaleString();
-        document.getElementById('currentStatus').textContent = data.status;
+        document.getElementById('currentViews').textContent = data.data.views.toLocaleString();
+        document.getElementById('currentStatus').textContent = data.data.status;
         document.getElementById('commentsCount').textContent = data.commentsCount;
     }
 
