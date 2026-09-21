@@ -21,10 +21,10 @@ const { title, description } = Astro.props;
         <meta name="keywords" content="袁某人,袁某,个人网站,个人主页,博客,留言簿" />
         <meta name="description" content={ description || "袁某人的个性空间：嘿！很高兴遇见你。这是我的实时生存报告与人格画像。在这里，文字不只是记录，更是连接。翻翻博客，逛逛留言簿，让我们在这个简约的空间里，开启一场有趣的对话。" } />
     </head>
-    <body ontouchstart="ontouchstart" class="font-mono bg-neutral-50 dark:bg-neutral-900 dark:text-neutral-400">
-        
-        <main class="container mx-auto w-full max-w-2xl p-6 space-y-8 text-lg font-medium break-all text-neutral-600 dark:text-neutral-400">
-			<Image src="/avatar.webp" alt="头像" width={100} height={100} class="mb-12 size-6 rounded-full outline-2 outline-offset-2 outline-dashed outline-neutral-200 dark:outline-neutral-700"/>
+    <body ontouchstart="ontouchstart" class="font-mono bg-stone-50 text-stone-600 antialiased dark:bg-stone-900 dark:text-stone-400">
+
+        <main class="mx-auto w-full max-w-2xl space-y-9 px-6 py-16 text-base leading-8 break-words">
+			<Image src="/avatar.webp" alt="头像" width={100} height={100} class="mb-10 size-6 rounded-full outline-2 outline-offset-2 outline-dashed outline-stone-200 dark:outline-stone-700"/>
             <slot />
 		</main>
 

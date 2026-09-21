@@ -1,133 +1,74 @@
 ---
 import BaseLayout from "./layouts/BaseLayout.astro";
 
-const myTags = [
-  	"废话输出机器🤐",
-	"重度拖延症😪",
-	"准时emo🌧️",
-	"熬夜冠军🌠",
-	"人之常情😍",
-	"Need food🥣",
-];
+const label = "text-sm font-medium text-stone-400 dark:text-stone-500";
+
+const myTags = ["废话输出机器🤐", "重度拖延症😪", "准时emo🌧️", "熬夜冠军🌠", "人之常情😍", "Need food🥣"];
 ---
 
 <BaseLayout>
-    <div>👋 欢迎来访<br><span id="randTitle"></span></div>
+    <header class="space-y-1">
+        <h1 class="font-semibold text-stone-900 dark:text-stone-100">👋 欢迎来访</h1>
+        <p id="randTitle" class="text-stone-500 dark:text-stone-400"></p>
+    </header>
 
-    <div>👀 你是第 <span id="currentViews">...</span> 位访客</div>
-
-    <div>我正在：『<span id="currentStatus">...</span>』</div>
-
-    <div class="mb-2 font-semibold text-neutral-800 dark:text-neutral-200">😉关于我</div>
-
-    <div>我是一名极简主义者，喜欢用文字和 emoji 记录生活。</div>
-    
-    <div class="flex items-center gap-2">
-        <div class="font-semibold text-neutral-800 dark:text-neutral-200">✍️留言簿</div>
-        <a href="https://jb18.cm/guestbook/" target="_blank" class="transition active:scale-95"><span class="bg-[#DFE9D0] font-light text-base rounded-full py-1 px-3 dark:bg-[#3E4E42] dark:text-neutral-300 tabular-nums"><span id="commentsCount" class="underline">...</span>条记录</span></a>
+    <div class="space-y-1 text-sm text-stone-500 dark:text-stone-400">
+        <p>👀 你是第 <span id="currentViews" class="font-semibold tabular-nums text-stone-700 dark:text-stone-200">...</span> 位访客</p>
+        <p>我正在：『<span id="currentStatus" class="text-stone-700 dark:text-stone-200">...</span>』</p>
     </div>
 
-    <div class="space-y-2">
-        <div class="font-semibold text-neutral-800 dark:text-neutral-300">🏷️标签</div>
-        <div class="flex flex-wrap items-center gap-2">
-            {myTags.map((tag, index) => (
-                <span 
-                    class="bg-[#DFE9D0] font-light text-base rounded-full py-1 px-3 dark:bg-[#3E4E42] dark:text-neutral-300"
-                >
-                    {tag}
-                </span>
+    <section class="space-y-2">
+        <h2 class={label}>😉 关于我</h2>
+        <p>我是一名极简主义者，喜欢用文字和 emoji 记录生活。</p>
+    </section>
+
+    <div class="flex items-center gap-2">
+        <h2 class={label}>✍️ 留言簿</h2>
+        <a href="https://jb18.cm/guestbook/" target="_blank" class="rounded-full bg-stone-200/70 px-2.5 py-0.5 text-xs tabular-nums text-stone-600 dark:bg-stone-800/60 dark:text-stone-300">
+            <span id="commentsCount" class="underline underline-offset-2">...</span> 条记录
+        </a>
+    </div>
+
+    <section class="space-y-3">
+        <h2 class={label}>🏷️ 标签</h2>
+        <div class="flex flex-wrap gap-2">
+            {myTags.map((tag) => (
+                <span class="rounded-full bg-stone-200/70 px-3 py-1 text-sm text-stone-600 dark:bg-stone-800/60 dark:text-stone-300">{tag}</span>
             ))}
         </div>
-    </div>
-    
-    <div class="mb-2 font-semibold text-neutral-800 dark:text-neutral-200">💡深入洞察</div>
+    </section>
 
-    <div>...</div>
-
-    <a 
-        class="inline-flex items-center gap-1 rounded-lg px-4 py-2 font-normal text-base cursor-pointer transition active:scale-95 bg-neutral-200/70 hover:bg-neutral-200 active:bg-neutral-300 dark:bg-neutral-800 dark:hover:bg-neutral-700 dark:active:bg-neutral-600 text-neutral-800 dark:text-neutral-200" 
-        href="https://jb18.cm" 
-        target="_blank"
-    >
-        访问我的博客
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="size-4"><path d="M20 12L4 12" stroke="currentColor" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round"/><path d="M12.9676 19.6606L19.5404 13.0878C19.684 12.9454 19.798 12.776 19.8757 12.5892C19.9536 12.4025 19.9936 12.2023 19.9936 12C19.9936 11.7977 19.9536 11.5975 19.8757 11.4108C19.798 11.224 19.684 11.0546 19.5404 10.9123L12.9676 4.33942" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    <a href="https://jb18.cm" target="_blank" class="block w-full border-t border-stone-200/70 pt-6 text-sm font-medium text-stone-700 underline-offset-4 hover:underline dark:border-stone-800 dark:text-stone-300">
+        访问我的博客 <span class="text-stone-400">→</span>
     </a>
 </BaseLayout>
 
 <script>
-    function randomTitle() {
-        const randTitles = [
-            "好久不见，今天过得开心吗？",
-            "万物可爱，愿你今天也有一份好心情。",
-            "这里的每一行字，都是送给你的礼物。",
-            "停下来，吹吹风，看看这里的文字。",
-            "保持好奇，世界比你想象的更宽广。",
-            "万物皆有裂痕，那是光照进来的地方。",
-            "在有限的时间里，去探索无限的可能。",
-            "记录，是为了不被遗忘。",
-            "你好，很高兴在这里与你思想共振。",
-            "今天打算做点什么有趣的事？",
-            "保持热爱，奔赴下一场山海。",
-            "每一个不曾起舞的日子，都是对生命的辜负。",
-            "既然来了，就多坐一会吧。",
-            "在这里，发现文字的温度。",
-            "生活碎片，都在这里拼凑完整。"
-        ];
+    const titles = [
+        "好久不见，今天过得开心吗？", "万物可爱，愿你今天也有一份好心情。", "这里的每一行字，都是送给你的礼物。",
+        "停下来，吹吹风，看看这里的文字。", "保持好奇，世界比你想象的更宽广。", "万物皆有裂痕，那是光照进来的地方。",
+        "在有限的时间里，去探索无限的可能。", "记录，是为了不被遗忘。", "你好，很高兴在这里与你思想共振。",
+        "今天打算做点什么有趣的事？", "保持热爱，奔赴下一场山海。", "每一个不曾起舞的日子，都是对生命的辜负。",
+        "既然来了，就多坐一会吧。", "在这里，发现文字的温度。", "生活碎片，都在这里拼凑完整。"
+    ];
+    const $ = (id: string) => document.getElementById(id)!;
 
-        const randTitle = document.getElementById("randTitle");
-        if (randTitle) {
-            const storedTitle = sessionStorage.getItem("randomTitle");
-            if (storedTitle) {
-                randTitle.innerText = storedTitle;
-            } else {
-                const randomTitle = randTitles[Math.floor(Math.random() * randTitles.length)];
-                sessionStorage.setItem("randomTitle", randomTitle);
-                randTitle.innerText = randomTitle;
-            }
-        }
-    }
+    const title = sessionStorage.getItem("title") || titles[Math.floor(Math.random() * titles.length)];
+    sessionStorage.setItem("title", title);
+    $("randTitle").textContent = title;
 
-    async function fetchData() {
-        const cacheKey = 'pageData';
-        const cached = sessionStorage.getItem(cacheKey);
-        
-        if (cached) {
-            const data = JSON.parse(cached);
-            updateUI(data);
-            return;
-        }
-        
-        try {
-            const [commentsRes, statusRes] = await Promise.all([
-                fetch('https://api.github.com/repos/ymc0182/comments/discussions'),
-                fetch('/api/status')
+    (async () => {
+        let data = JSON.parse(sessionStorage.getItem("data") || "null");
+        if (!data) {
+            const [comments, status] = await Promise.all([
+                fetch("https://api.github.com/repos/ymc0182/comments/discussions").then((r) => r.json()),
+                fetch("/api/status").then((r) => r.json())
             ]);
-            
-            const commentsData = await commentsRes.json();
-            const statusData = await statusRes.json();
-            
-            const totalComments = commentsData.reduce((sum, item) => sum + item.comments, 0);
-            
-            const mergedData = {
-                ...statusData,
-                commentsCount: totalComments
-            };
-            
-            sessionStorage.setItem(cacheKey, JSON.stringify(mergedData));
-            updateUI(mergedData);
-        } catch (error) {
-            console.error('Failed to fetch data:', error);
+            data = { ...status, commentsCount: comments.reduce((sum: number, item: any) => sum + item.comments, 0) };
+            sessionStorage.setItem("data", JSON.stringify(data));
         }
-    }
-
-    function updateUI(data) {
-        document.getElementById('currentViews').textContent = data.data.views.toLocaleString();
-        document.getElementById('currentStatus').textContent = data.data.status;
-        document.getElementById('commentsCount').textContent = data.commentsCount;
-    }
-
-    document.addEventListener('DOMContentLoaded', () => {
-        randomTitle();
-        fetchData();
-    });
+        $("currentViews").textContent = data.data.views.toLocaleString();
+        $("currentStatus").textContent = data.data.status;
+        $("commentsCount").textContent = data.commentsCount;
+    })().catch(() => {});
 </script>
