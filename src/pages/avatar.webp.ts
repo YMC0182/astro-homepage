@@ -1,19 +1,27 @@
 import type { APIRoute } from "astro";
 import sharp from "sharp";
 
+const AVATAR_URL = "https://q1.qlogo.cn/g?b=qq&nk=501414437&s=100";
+const FETCH_TIMEOUT = 10_000;
+
 export const GET: APIRoute = async () => {
-	const response = await fetch("https://q1.qlogo.cn/g?b=qq&nk=501414437&s=100");
-	const arrayBuffer = await response.arrayBuffer();
-	
-	// Convert to WebP format
-	const webpBuffer = await sharp(Buffer.from(arrayBuffer))
-		.webp({ quality: 60, effort: 6 })
+	const response = await fetch(AVATAR_URL, {
+		signal: AbortSignal.timeout(FETCH_TIMEOUT),
+	});
+
+	if (!response.ok) {
+		throw new Error(`获取 QQ 头像失败：${response.status} ${response.statusText}`);
+	}
+
+	const webpBuffer = await sharp(Buffer.from(await response.arrayBuffer()))
+		.resize(100, 100, { fit: "cover" })
+		.webp({ quality: 50, effort: 6 })
 		.toBuffer();
-	
+
 	return new Response(new Uint8Array(webpBuffer), {
 		headers: {
 			"Content-Type": "image/webp",
-			"Cache-Control": "public, max-age=86400, s-maxage=604800, stale-while-revalidate=2592000",
+			"Cache-Control": "public, max-age=86400, stale-while-revalidate=604800",
 		},
 	});
-}
+};

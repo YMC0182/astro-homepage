@@ -1,12 +1,19 @@
 ---
-import BaseLayout from "./layouts/BaseLayout.astro";
+import BaseLayout from "../layouts/BaseLayout.astro";
 
 const label = "text-sm font-medium text-stone-400 dark:text-stone-500";
 
 const myTags = ["废话输出机器🤐", "重度拖延症😪", "准时emo🌧️", "熬夜冠军🌠", "人之常情😍", "Need food🥣"];
+
+const links = [
+    { label: "访问我的博客", href: "https://jb18.cm" },
+    { label: "足迹地图", href: "https://jb18.cm/footprint-map" },
+    { label: "装备清单", href: "https://jb18.cm/equipment" },
+];
 ---
 
 <BaseLayout>
+    <link rel="preconnect" href="https://api.github.com" crossorigin />
     <header class="space-y-1">
         <h1 class="font-semibold text-stone-900 dark:text-stone-100">👋 欢迎来访</h1>
         <p id="randTitle" class="text-stone-500 dark:text-stone-400"></p>
@@ -24,7 +31,7 @@ const myTags = ["废话输出机器🤐", "重度拖延症😪", "准时emo🌧�
 
     <div class="flex items-center gap-2">
         <h2 class={label}>✍️ 留言簿</h2>
-        <a href="https://jb18.cm/guestbook/" target="_blank" class="rounded-full bg-stone-200/70 px-2.5 py-0.5 text-xs tabular-nums text-stone-600 dark:bg-stone-800/60 dark:text-stone-300">
+        <a href="https://jb18.cm/guestbook/" target="_blank" rel="noopener" class="rounded-full bg-stone-200/70 px-2.5 py-0.5 text-xs tabular-nums text-stone-600 dark:bg-stone-800/60 dark:text-stone-300">
             <span id="commentsCount" class="underline underline-offset-2">...</span> 条记录
         </a>
     </div>
@@ -38,9 +45,17 @@ const myTags = ["废话输出机器🤐", "重度拖延症😪", "准时emo🌧�
         </div>
     </section>
 
-    <a href="https://jb18.cm" target="_blank" class="block w-full border-t border-stone-200/70 pt-6 text-sm font-medium text-stone-700 underline-offset-4 hover:underline dark:border-stone-800 dark:text-stone-300">
-        访问我的博客 <span class="text-stone-400">→</span>
-    </a>
+    <nav aria-label="其他页面" class="border-t border-stone-200/70 pt-6 dark:border-stone-800">
+        <ul class="space-y-3 text-sm font-medium text-stone-700 dark:text-stone-300">
+            {links.map(({ label, href }) => (
+                <li>
+                    <a href={href} target="_blank" rel="noopener" class="inline-flex items-center gap-1 underline-offset-4 hover:underline">
+                        {label}<span aria-hidden="true" class="text-xs text-stone-400">↗</span>
+                    </a>
+                </li>
+            ))}
+        </ul>
+    </nav>
 </BaseLayout>
 
 <script>
@@ -52,23 +67,33 @@ const myTags = ["废话输出机器🤐", "重度拖延症😪", "准时emo🌧�
         "既然来了，就多坐一会吧。", "在这里，发现文字的温度。", "生活碎片，都在这里拼凑完整。"
     ];
     const $ = (id: string) => document.getElementById(id)!;
+    const readCache = (key: string) => {
+        try { return JSON.parse(sessionStorage.getItem(key) || "null"); } catch { return null; }
+    };
 
-    const title = sessionStorage.getItem("title") || titles[Math.floor(Math.random() * titles.length)];
-    sessionStorage.setItem("title", title);
+    let title = sessionStorage.getItem("title");
+    if (!title) {
+        title = titles[Math.floor(Math.random() * titles.length)];
+        sessionStorage.setItem("title", title);
+    }
     $("randTitle").textContent = title;
 
     (async () => {
-        let data = JSON.parse(sessionStorage.getItem("data") || "null");
+        let data = readCache("data");
         if (!data) {
             const [comments, status] = await Promise.all([
                 fetch("https://api.github.com/repos/ymc0182/comments/discussions").then((r) => r.json()),
                 fetch("/api/status").then((r) => r.json())
             ]);
-            data = { ...status, commentsCount: comments.reduce((sum: number, item: any) => sum + item.comments, 0) };
+            data = {
+                views: status.data.views,
+                status: status.data.status,
+                commentsCount: comments.reduce((sum: number, item: any) => sum + item.comments, 0),
+            };
             sessionStorage.setItem("data", JSON.stringify(data));
         }
-        $("currentViews").textContent = data.data.views.toLocaleString();
-        $("currentStatus").textContent = data.data.status;
+        $("currentViews").textContent = data.views.toLocaleString();
+        $("currentStatus").textContent = data.status;
         $("commentsCount").textContent = data.commentsCount;
     })().catch(() => {});
 </script>
